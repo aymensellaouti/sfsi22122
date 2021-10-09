@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FirstController
 {
     /**
-     * @Route("/first")
+     * @Route("/first", name="home")
      */
     function myFirstFunction() {
         $response = new Response('
