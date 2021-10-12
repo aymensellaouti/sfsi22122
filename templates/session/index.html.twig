@@ -10,18 +10,17 @@
 </head>
 <body>
 <div class="container">
-    <div>
-        <h1>Le Cv de {{ firstname }}  {{ name }}</h1>
-        <p>
-            Bonjour
-        </p>
-        <p>Je m'appelle {{ firstname }}  {{ name }}</p>
-        <p>J'ai {{ age }} ans </p>
-        <p>Je suis de la section {{ section}} </p>
-    </div>
-    <div class="alert alert-primary" role="alert">
-        A simple primary alert—check it out!
-    </div>
+    {% for message in app.session.flashBag.get('info') %}
+        <div class="alert alert-info" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% if app.session.get('nbVisite') > 1 %}
+        <div class="alert alert-success" role="alert">
+            Bienvenu, c'est votre {{ app.session.get('nbVisite') }} visites.
+        </div>
+    {% endif %}
 </div>
 </body>
 </html>
