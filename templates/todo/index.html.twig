@@ -10,11 +10,21 @@
 </head>
 <body>
 <div class="container">
-{#    {% for message in app.session.flashBag.get('info') %}#}
-{#        <div class="alert alert-info" role="alert">#}
-{#            {{ message }}#}
-{#        </div>#}
-{#    {% endfor %}#}
+    {% for message in app.session.flashBag.get('info') %}
+        <div class="alert alert-info" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.session.flashBag.get('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.session.flashBag.get('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
     <div class="alert alert-warning">
         Liste des todos
     </div>

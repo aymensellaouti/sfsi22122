@@ -29,4 +29,21 @@ class TodoController extends AbstractController
         //appelle la page index.html.twig
         return $this->render('todo/index.html.twig');
     }
+    #[Route('/todo/add/{name}/{content}', name: 'todo.add')]
+    public function addTodo(Request $request, $name, $content) {
+        $session = $request->getSession();
+        if ($session->has('mesTodos')) {
+            $todos = $session->get('mesTodos');
+            if (isset($todos[$name])) {
+                $this->addFlash('error', " Le todo d'id $name existe déjà");
+            } else {
+                $todos[$name] = $content;
+                $this->addFlash('success', " Le todo $name a été ajouté avec succès");
+                $session->set('mesTodos', $todos);
+            }
+        } else {
+            $this->addFlash('error', " Le tableau n'a pas encore été crée :(");
+        }
+        return $this->redirectToRoute('todo');
+    }
 }
