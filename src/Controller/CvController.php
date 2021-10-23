@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CvController extends AbstractController
 {
-    #[Route("cv/{name}/{firstname}/{age}/{section}", name: 'cv.home')]
+    #[Route("cv/{name}/{firstname}/{age<\d{1,2}>}/{section<GL|RT>}", name: 'cv.home')]
     public function cv(Request $request, $name, $firstname, $age, $section) {
         $session = $request->getSession();
         return $this->render('cv/cv.html.twig', [

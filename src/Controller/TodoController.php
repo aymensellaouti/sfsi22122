@@ -7,9 +7,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/todo")
+ */
 class TodoController extends AbstractController
 {
-    #[Route('/todo', name: 'todo')]
+    #[Route('/', name: 'todo')]
     public function index(
         Request $request
     ): Response
@@ -29,7 +32,7 @@ class TodoController extends AbstractController
         //appelle la page index.html.twig
         return $this->render('todo/index.html.twig');
     }
-    #[Route('/todo/add/{name}/{content}', name: 'todo.add')]
+    #[Route('/add/{name}/{content<\d+>}', name: 'todo.add')]
     public function addTodo(Request $request, $name, $content) {
         $session = $request->getSession();
         if ($session->has('mesTodos')) {
@@ -47,7 +50,7 @@ class TodoController extends AbstractController
         return $this->redirectToRoute('todo');
     }
 
-    #[Route('/todo/update/{name}/{content}', name: 'todo.update')]
+    #[Route('/update/{name}/{content}', name: 'todo.update')]
     public function updateTodo(Request $request, $name, $content) {
         $session = $request->getSession();
         if ($session->has('mesTodos')) {
@@ -65,7 +68,7 @@ class TodoController extends AbstractController
         return $this->redirectToRoute('todo');
     }
 
-    #[Route('/todo/delete/{name}', name: 'todo.delete')]
+    #[Route('/delete/{name}', name: 'todo.delete')]
     public function deleteTodo(Request $request, $name, $content)
     {
         $session = $request->getSession();
@@ -83,7 +86,7 @@ class TodoController extends AbstractController
         }
         return $this->redirectToRoute('todo');
     }
-        #[Route('/todo/reset', name: 'todo.reset')]
+        #[Route('/reset', name: 'todo.reset')]
         public function resetTodo(Request $request) {
             $session = $request->getSession();
             if ($session->has('mesTodos')) {
