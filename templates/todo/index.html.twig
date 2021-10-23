@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.css') }}">
+    <title>Todo</title>
+</head>
+<body>
+<div class="container">
+{#    {% for message in app.session.flashBag.get('info') %}#}
+{#        <div class="alert alert-info" role="alert">#}
+{#            {{ message }}#}
+{#        </div>#}
+{#    {% endfor %}#}
+    <div class="alert alert-warning">
+        Liste des todos
+    </div>
+
+    <ul class="list-group">
+        {% for nomTodo, valeurTodo in app.session.get('mesTodos') %}
+            <li class="list-group-item">
+                {{ nomTodo }} : {{ valeurTodo }}
+            </li>
+        {% endfor %}
+    </ul>
+
+</div>
+</body>
+</html>
