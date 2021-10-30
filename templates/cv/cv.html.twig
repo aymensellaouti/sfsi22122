@@ -11,12 +11,12 @@
 <body>
 <div class="container">
     <div>
-        <h1>Le Cv de {{ firstname }}  {{ name }}</h1>
+        <h1>Le Cv de {{ firstname | upper }}  {{ name | upper }}</h1>
         <p>
             Bonjour
         </p>
         <p>Je m'appelle {{ firstname }}  {{ name }}</p>
-        <p>J'ai {{ age }} ans </p>
+        <p>J'ai {{ age | abs }} ans </p>
         <p>Je suis de la section {{ section}} </p>
     </div>
     <div class="alert alert-primary" role="alert">
