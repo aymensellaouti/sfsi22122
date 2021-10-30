@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="alert alert-warning">
+        Liste des users
+    </div>
+    <table class="table">
+        <tr class="table-active">
+            <td>Name</td>
+            <td>Firstname</td>
+            <td>Age</td>
+        </tr>
+        {% for user in users %}
+        <tr class="
+                    {% if loop.index is even %}table-danger
+                    {% else %} table-warning
+                    {% endif %}
+                ">
+            <td>{{ user.name }}</td>
+            <td>{{ user.firstname }}</td>
+            <td>{{ user.age }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
