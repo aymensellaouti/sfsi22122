@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    {{ path('tab', {nb: 7}) }} <br>
+    {{ url('tab', {nb: 7}) }}
+    <a href="{{ path('tab', {nb: 7}) }}">Tableau de 7 notes</a>
+    <img src="{{ asset('images/gateau.jpg') }}">
     <div class="alert alert-warning">
         Liste des users
     </div>
@@ -21,5 +25,10 @@
         </tr>
         {% endfor %}
     </table>
+    {{ include('fragments/error-messages.html.twig', {message: 'Random Error'}) }}
+    {{ render(controller('App\\Controller\\TabController::index',{nb: 10})) }}
 {% endblock %}
 
+{% block title %}
+    {{ parent() }} : Users
+{% endblock%}

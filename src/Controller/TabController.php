@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TabController extends AbstractController
 {
     #[Route('/show/{nb<\d+>?5}', name: 'tab')]
-    public function index($nb): Response
+    public function index($nb = 5): Response
     {
         $tab = [];
         for($i = 0; $i < $nb; $i++) {
