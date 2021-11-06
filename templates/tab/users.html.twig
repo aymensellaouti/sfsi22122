@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'template.html.twig' %}
 {% block body %}
     {{ path('tab', {nb: 7}) }} <br>
     {{ url('tab', {nb: 7}) }}
@@ -32,3 +32,7 @@
 {% block title %}
     {{ parent() }} : Users
 {% endblock%}
+
+{% block pageH1 %}
+    Users
+{% endblock %}
