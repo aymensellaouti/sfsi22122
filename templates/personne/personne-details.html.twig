@@ -1,0 +1,22 @@
+{% extends 'template.html.twig' %}
+
+{% block body %}
+    {% if personne %}
+    <div>
+        <p>
+            Name : {{ personne.name }}
+        </p>
+        <p>
+            Firstname : {{ personne.firstname }}
+        </p>
+        <p>
+            Age : {{ personne.age }}
+        </p>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    Détails Personne
+{% endblock %}
+

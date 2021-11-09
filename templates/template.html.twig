@@ -129,23 +129,24 @@
         <main>
             <div class="container-fluid px-4">
                 <h1 class="mt-4">{% block pageH1 %}Static Navigation{% endblock %}</h1>
+                {% for message in app.session.flashBag.get('info') %}
+                    <div class="alert alert-info" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.session.flashBag.get('success') %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.session.flashBag.get('error') %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
                 {% block body %}
-                    {% for message in app.session.flashBag.get('info') %}
-                        <div class="alert alert-info" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                    {% for message in app.session.flashBag.get('success') %}
-                        <div class="alert alert-success" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                    {% for message in app.session.flashBag.get('error') %}
-                        <div class="alert alert-danger" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                    <div class="card mb-4">
+                         <div class="card mb-4">
                         <div class="card-body">
                             <p class="mb-0">
                                 This page is an example of using static navigation. By removing the

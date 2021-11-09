@@ -27,6 +27,11 @@ class Personne
      */
     private $age;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $firstname;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +57,18 @@ class Personne
     public function setAge(?int $age): self
     {
         $this->age = $age;
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
 
         return $this;
     }
