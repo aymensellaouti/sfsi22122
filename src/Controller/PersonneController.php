@@ -52,7 +52,7 @@ class PersonneController extends AbstractController
         } else {
             $this->addFlash('error', "Erreur veuillez vérifier votre requete");
         }
-        return $this->render('personne/index.html.twig');
+        return $this->forward('App\Controller\PersonneController::listAllPersonnes');
     }
     #[Route('/details/{id}', name: 'personne.details')]
     public function getPersonneById(Personne $personne = null) {
@@ -61,6 +61,16 @@ class PersonneController extends AbstractController
         }
         return $this->render('personne/personne-details.html.twig', [
             'personne' => $personne
+        ]);
+    }
+    #[Route('/all', name: 'personne.list')]
+    public function listAllPersonnes() {
+        // Récupérer la liste des personnes
+        $repository = $this->getDoctrine()->getRepository(Personne::class);
+        $personnes = $repository->findAll();
+        // l'envoyer à twig
+        return $this->render('personne/list.html.twig', [
+            'personnes' => $personnes
         ]);
     }
 }

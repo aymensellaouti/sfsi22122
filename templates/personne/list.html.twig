@@ -1,0 +1,23 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}
+    Liste des personnes
+{% endblock %}
+
+{% block body %}
+    <h1>Liste des personnes</h1>
+    <div class="row">
+        {% for personne in personnes %}
+            <div class="card col-3 m-2">
+                <div class="card-body">
+                    <h5 class="card-title">{{ personne.firstname }} {{ personne.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ personne.age }}</h6>
+                    <p class="card-text">Je suis {{ personne.firstname }} {{ personne.name }} et j'ai {{ personne.age }} ans</p>
+                    <a href="{{ path('personne.details', {id: personne.id }) }}" class="card-link">Card link</a>
+                    <a href="{{ path('personne.delete', {id: personne.id }) }}" class="card-link">Supprimer</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
