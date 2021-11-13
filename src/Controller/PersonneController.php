@@ -63,11 +63,16 @@ class PersonneController extends AbstractController
             'personne' => $personne
         ]);
     }
-    #[Route('/all', name: 'personne.list')]
-    public function listAllPersonnes() {
+    #[Route('/all/{numPage?1}', name: 'personne.list')]
+    public function listAllPersonnes($numPage) {
         // Récupérer la liste des personnes
         $repository = $this->getDoctrine()->getRepository(Personne::class);
-        $personnes = $repository->findAll();
+        $limit = 9
+        ;
+        $offset = ($numPage - 1) * $limit;
+        $personnes = $repository->findBy(
+            [], [], $limit, $offset
+        );
         // l'envoyer à twig
         return $this->render('personne/list.html.twig', [
             'personnes' => $personnes
