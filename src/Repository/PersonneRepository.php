@@ -19,6 +19,17 @@ class PersonneRepository extends ServiceEntityRepository
         parent::__construct($registry, Personne::class);
     }
 
+    public function getPersonneByIntervalAge($min, $max) {
+        $qb = $this->createQueryBuilder('p');
+        $qb->andWhere('p.age >= :minAge')
+           ->andWhere('p.age <= :maxAge')
+           ->setParameters([
+               'minAge'=> $min,
+               'maxAge'=> $max,
+           ]);
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Personne[] Returns an array of Personne objects
     //  */

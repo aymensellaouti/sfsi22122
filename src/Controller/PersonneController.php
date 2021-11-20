@@ -52,7 +52,7 @@ class PersonneController extends AbstractController
         } else {
             $this->addFlash('error', "Erreur veuillez vérifier votre requete");
         }
-        return $this->forward('App\Controller\PersonneController::listAllPersonnes');
+        return $this->redirectToRoute('personne.list');
     }
     #[Route('/details/{id}', name: 'personne.details')]
     public function getPersonneById(Personne $personne = null) {
@@ -63,19 +63,57 @@ class PersonneController extends AbstractController
             'personne' => $personne
         ]);
     }
-    #[Route('/all/{numPage?1}', name: 'personne.list')]
-    public function listAllPersonnes($numPage) {
+    #[Route('/all/{numPage?1}/{limit?9}', name: 'personne.list')]
+    public function listAllPersonnes($numPage, $limit) {
         // Récupérer la liste des personnes
-        $repository = $this->getDoctrine()->getRepository(Personne::class);
-        $limit = 9
-        ;
+        $repository = $this->getDoctrine()
+                        ->getRepository(Personne::class);
+
+
+//        $personnes = $repository->findBy(
+//            [], [], $limit, $offset
+//        );
+        $personnes = $repository->findAll();
+        $nbPersonnes = count($personnes);
+        $nbrePages = ($nbPersonnes % $limit) ? ceil($nbPersonnes / $limit) : $nbPersonnes / $limit;
+        if ($numPage > $nbrePages) {
+            $numPage = $nbrePages;
+        }
         $offset = ($numPage - 1) * $limit;
-        $personnes = $repository->findBy(
-            [], [], $limit, $offset
-        );
+        $personnesToShow = array_slice($personnes, $offset, $limit);
+
         // l'envoyer à twig
         return $this->render('personne/list.html.twig', [
-            'personnes' => $personnes
+            'personnes' => $personnesToShow,
+            'nbrePage' => $nbrePages,
+            'page' => $numPage,
+            'limit' => $limit
+        ]);
+    }
+    #[Route('/all/age/{ageMin}/{ageMax}/{numPage?1}/{limit?9}', name: 'personne.list.age')]
+    public function listAllPersonnesByAge($ageMin, $ageMax, $numPage, $limit) {
+        // Récupérer la liste des personnes
+        $repository = $this->getDoctrine()
+            ->getRepository(Personne::class);
+//        $personnes = $repository->findBy(
+//            [], [], $limit, $offset
+//        );
+
+        $personnes = $repository->getPersonneByIntervalAge($ageMin, $ageMax);
+        $nbPersonnes = count($personnes);
+        $nbrePages = ($nbPersonnes % $limit) ? ceil($nbPersonnes / $limit) : $nbPersonnes / $limit;
+        if ($numPage > $nbrePages) {
+            $numPage = $nbrePages;
+        }
+        $offset = ($numPage - 1) * $limit;
+        $personnesToShow = array_slice($personnes, $offset, $limit);
+
+        // l'envoyer à twig
+        return $this->render('personne/list.html.twig', [
+            'personnes' => $personnesToShow,
+            'nbrePage' => $nbrePages,
+            'page' => $numPage,
+            'limit' => $limit
         ]);
     }
 }
