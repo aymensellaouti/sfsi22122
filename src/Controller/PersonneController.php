@@ -90,30 +90,27 @@ class PersonneController extends AbstractController
             'limit' => $limit
         ]);
     }
-    #[Route('/all/age/{ageMin}/{ageMax}/{numPage?1}/{limit?9}', name: 'personne.list.age')]
-    public function listAllPersonnesByAge($ageMin, $ageMax, $numPage, $limit) {
+    #[Route('/alls', name: 'personne.list.alls')]
+    public function listAllsPersonnes() {
         // Récupérer la liste des personnes
         $repository = $this->getDoctrine()
             ->getRepository(Personne::class);
-//        $personnes = $repository->findBy(
-//            [], [], $limit, $offset
-//        );
-
-        $personnes = $repository->getPersonneByIntervalAge($ageMin, $ageMax);
-        $nbPersonnes = count($personnes);
-        $nbrePages = ($nbPersonnes % $limit) ? ceil($nbPersonnes / $limit) : $nbPersonnes / $limit;
-        if ($numPage > $nbrePages) {
-            $numPage = $nbrePages;
-        }
-        $offset = ($numPage - 1) * $limit;
-        $personnesToShow = array_slice($personnes, $offset, $limit);
-
+        $personnes = $repository->findAll();
         // l'envoyer à twig
-        return $this->render('personne/list.html.twig', [
-            'personnes' => $personnesToShow,
-            'nbrePage' => $nbrePages,
-            'page' => $numPage,
-            'limit' => $limit
+        return $this->render('personne/listdt.html.twig', [
+            'personnes' => $personnes,
+        ]);
+    }
+    #[Route('/stats/age/{ageMin}/{ageMax}', name: 'personne.stats.age')]
+    public function statsPersonnesByAge($ageMin, $ageMax) {
+        // Récupérer la liste des personnes
+        $repository = $this->getDoctrine()
+            ->getRepository(Personne::class);
+        $stats = $repository->getStatsPersonneByIntervalAge($ageMin, $ageMax);
+        return $this->render('personne/statsAge.html.twig', [
+            'stat' => $stats[0],
+            'ageMin' => $ageMin,
+            'ageMax' => $ageMax,
         ]);
     }
 }
