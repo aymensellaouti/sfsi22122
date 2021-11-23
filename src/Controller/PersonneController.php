@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Personne;
+use App\Form\PersonneType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,6 +39,24 @@ class PersonneController extends AbstractController
         $manager->flush();
         return $this->render('personne/personne-details.html.twig', [
             'personne' => $personne
+        ]);
+    }
+    #[Route('/add', name: 'personne.add.form')]
+    public function addFormPersonne() {
+//        $manager = $this->getDoctrine()
+//                        ->getManager();
+        $personne = new Personne();
+//        $personne->setName('sellaouti');
+        $form = $this->createForm(PersonneType::class,$personne);
+        $form->remove('createdAt');
+        $form->remove('updatedAt');
+        //Persister ajouter dans la transaction
+//        $manager->persist($personne);
+////        $manager->persist($personne2);
+//        //executer la transaction
+//        $manager->flush();
+        return $this->render('personne/add-personne.html.twig', [
+            'form' => $form->createView()
         ]);
     }
     #[Route('/delete/{id}', name: 'personne.delete')]
