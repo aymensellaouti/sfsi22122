@@ -13,6 +13,28 @@
             Age : {{ personne.age }}
         </p>
     </div>
+        {% if personne.hobbies %}
+        <ol class="list-group">
+            {% for hobby in personne.hobbies %}
+                <li class="list-group-item">
+                    {{ hobby.name }}
+                </li>
+            {% endfor %}
+        </ol>
+            {% endif %}
+        {% if personne.job %}
+        <div class="alert alert-warning">
+            {{ personne.job.name }}
+        </div>
+            {% endif %}
+        {% if personne.profile %}
+        <div class="alert alert-secondary">
+            <a
+                href="{{ personne.profile.url }}"
+                target="_blank"
+            >{{ personne.profile.rs }}</a>
+            {% endif %}
+        </div>
     {% endif %}
 {% endblock %}
 

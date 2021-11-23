@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Personne;
 use App\Form\PersonneType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -41,20 +42,23 @@ class PersonneController extends AbstractController
             'personne' => $personne
         ]);
     }
-    #[Route('/add', name: 'personne.add.form')]
-    public function addFormPersonne() {
-//        $manager = $this->getDoctrine()
-//                        ->getManager();
-        $personne = new Personne();
-//        $personne->setName('sellaouti');
+    #[Route('/edit/{id?0}', name: 'personne.edit')]
+    public function addFormPersonne(Request $request, Personne $personne = null) {
+        if (!$personne) {
+            $personne = new Personne();
+        }
         $form = $this->createForm(PersonneType::class,$personne);
         $form->remove('createdAt');
         $form->remove('updatedAt');
-        //Persister ajouter dans la transaction
-//        $manager->persist($personne);
-////        $manager->persist($personne2);
-//        //executer la transaction
-//        $manager->flush();
+        $form->handleRequest($request);
+        if($form->isSubmitted()) {
+            $manager = $this->getDoctrine()
+                        ->getManager();
+            $manager->persist($personne);
+            $manager->flush();
+        $this->addFlash('success',"La personne ".$personne->getName()." a été ajouté avec succès");
+        return $this->redirectToRoute('personne.list.alls');
+        }
         return $this->render('personne/add-personne.html.twig', [
             'form' => $form->createView()
         ]);
