@@ -1,0 +1,72 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}
+    Liste des Jobs
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
+{% endblock %}
+{% block body %}
+    <h1>Liste des Jobs</h1>
+    <div class="alert alert-warning">
+            <a href="{{ path('job.edit') }}" class="card-link">
+                <i class="fas fs-4 fa-plus-circle"></i>
+            </a>
+    </div>
+    <div class="row">
+        <table id="listJobs" class="display nowrap" style="width:100%">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>Name</th>
+                <th>Created At</th>
+                <th>Uptaded At</th>
+                <th>Opérations</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for job in jobs %}
+                <tr>
+                    <td>{{ job.id }}</td>
+                    <td>{{ job.name }}</td>
+                    <td>{{ job.createdAt | date('d M Y H:i:s') }}</td>
+                    <td>{{ job.updatedAt | date('d M Y H:i:s') }}</td>
+                    <td>
+                        <a href="{{ path('job.edit', {id: job.id }) }}" class="card-link">
+                            <i class="fas fa-pen-square"></i>
+                        </a>
+{#                        <a href="{{ path('personne.details', {id: personne.id }) }}" class="card-link"><i#}
+{#                                    class="fas fa-info"></i></a>#}
+{#                        <a href="{{ path('personne.delete', {id: personne.id }) }}" class="card-link"><i#}
+{#                                    class="fas fa-user-times"></i></a>#}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#listJobs').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            } );
+        } );
+    </script>
+
+{% endblock %}
