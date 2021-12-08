@@ -10,11 +10,17 @@
 {% endblock %}
 {% block body %}
     <h1>Liste des personnes</h1>
+    <div class="alert alert-warning">
+        <a href="{{ path('personne.edit') }}" class="card-link">
+            <i class="fas fs-4 fa-plus-circle"></i>
+        </a>
+    </div>
     <div class="row">
         <table id="listPersonnes" class="display nowrap" style="width:100%">
             <thead>
             <tr>
                 <th>id</th>
+                <th>Image</th>
                 <th>Firstname</th>
                 <th>Name</th>
                 <th>Age</th>
@@ -25,6 +31,9 @@
             {% for personne in personnes %}
                 <tr>
                     <td>{{ personne.id }}</td>
+                    <td>
+                        <img src="{{ asset('uploads/personnes/'~ personne.image) }}" class="rounded-circle" width="50px" height="50px">
+                    </td>
                     <td>{{ personne.firstname }}</td>
                     <td>{{ personne.name }}</td>
                     <td>{{ personne.age }}</td>

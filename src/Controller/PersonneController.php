@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Personne;
 use App\Form\PersonneType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/personne')]
 class PersonneController extends AbstractController
@@ -43,7 +45,7 @@ class PersonneController extends AbstractController
         ]);
     }
     #[Route('/edit/{id?0}', name: 'personne.edit')]
-    public function addFormPersonne(Request $request, Personne $personne = null) {
+    public function addFormPersonne(Request $request, Personne $personne = null, SluggerInterface $slugger) {
         if (!$personne) {
             $personne = new Personne();
         }
@@ -51,7 +53,32 @@ class PersonneController extends AbstractController
         $form->remove('createdAt');
         $form->remove('updatedAt');
         $form->handleRequest($request);
-        if($form->isSubmitted()) {
+        if($form->isSubmitted() && $form->isValid()) {
+            //Gestion de l'uplaod
+            $imageFile = $form->get('image')->getData();
+            // si j upload un file
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $imageFile->move(
+                        $this->getParameter('personnes_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                    dd($e);
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $personne->setImage($newFilename);
+            }
+
             $manager = $this->getDoctrine()
                         ->getManager();
             $manager->persist($personne);

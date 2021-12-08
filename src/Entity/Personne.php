@@ -53,6 +53,11 @@ class Personne
      */
     private $job;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
     public function __construct()
     {
         $this->hobbies = new ArrayCollection();
@@ -146,4 +151,25 @@ class Personne
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->getFirstname().' '.$this->getName();
+    }
+
+    public function getImage(): ?string
+    {
+        if (!$this->image) {
+            return 'default.png';
+        }
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
 }
