@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Personne;
 use App\Form\PersonneType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,8 +45,11 @@ class PersonneController extends AbstractController
             'personne' => $personne
         ]);
     }
-    #[Route('/edit/{id?0}', name: 'personne.edit')]
+    #[
+        Route('/edit/{id?0}', name: 'personne.edit')
+    ]
     public function addFormPersonne(Request $request, Personne $personne = null, SluggerInterface $slugger) {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         if (!$personne) {
             $personne = new Personne();
         }

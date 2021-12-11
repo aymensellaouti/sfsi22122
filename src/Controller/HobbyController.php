@@ -5,12 +5,16 @@ namespace App\Controller;
 use App\Entity\Hobby;
 use App\Form\HobbyType;
 use App\Repository\HobbyRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/hobby')]
+#[
+    Route('/hobby'),
+    IsGranted('ROLE_ADMIN')
+]
 class HobbyController extends AbstractController
 {
     #[Route('/', name: 'hobby_index', methods: ['GET'])]

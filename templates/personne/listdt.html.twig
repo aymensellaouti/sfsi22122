@@ -10,11 +10,13 @@
 {% endblock %}
 {% block body %}
     <h1>Liste des personnes</h1>
+    {% if is_granted('ROLE_ADMIN') %}
     <div class="alert alert-warning">
         <a href="{{ path('personne.edit') }}" class="card-link">
             <i class="fas fs-4 fa-plus-circle"></i>
         </a>
     </div>
+    {% endif %}
     <div class="row">
         <table id="listPersonnes" class="display nowrap" style="width:100%">
             <thead>
@@ -40,8 +42,10 @@
                     <td>
                         <a href="{{ path('personne.details', {id: personne.id }) }}" class="card-link"><i
                                     class="fas fa-info"></i></a>
-                        <a href="{{ path('personne.delete', {id: personne.id }) }}" class="card-link"><i
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('personne.delete', {id: personne.id }) }}" class="card-link"><i
                                     class="fas fa-user-times"></i></a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
