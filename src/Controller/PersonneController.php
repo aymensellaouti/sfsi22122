@@ -163,4 +163,6 @@ class PersonneController extends AbstractController
             'ageMax' => $ageMax,
         ]);
     }
+
 }
+
